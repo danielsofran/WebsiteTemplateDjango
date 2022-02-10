@@ -1,0 +1,38 @@
+.text-responsive{
+    /*font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - 100px) / ([maximum viewport width] - [minimum viewport width])));*/
+    font-size: calc(100px + (100px - 100px) * ((1vw - 16px) / (100px - 16px))) !important;
+}
+
+.imageanimate {
+    -webkit-animation: action 15s alternate infinite;
+    animation: action 15s alternate infinite;
+}
+
+.test_container{
+    display: block !important;
+    background-color: lightgreen;
+    border: 1px solid red !important;
+}
+
+@-webkit-keyframes action {
+    0% { transform: translateY(-10%); }
+    100% { transform: translateY(-45%); }
+}
+
+@keyframes action {
+    0% { transform: translateY(-10%); }
+    100% { transform: translateY(-45%); }
+}
+
+/* gri la butonul sus */
+@keyframes greyscale-fade-in {
+    0%   { -webkit-filter: grayscale(100%); }
+    100% { -webkit-filter: grayscale(0%); }
+}
+
+.fadegray {
+    display: inline-block;
+    border-radius: 60%;
+    background-color: aqua;
+    animation: greyscale-fade-in 5s ease-in forwards alternate infinite;
+}

@@ -1,0 +1,15 @@
+<div class="card rounded shadow-sm border-0 produs">
+    <div class="card-body p-4"><img src="media/{{ produs.imagini.card.img }}" alt="" class="img-fluid d-block mx-auto mb-3">
+        <h5> <a href="/galerie/{{ produs.id }}" class="text-dark">{{ produs.nume }}</a></h5>
+         <p class="small text-muted font-italic">{{ produs.descriere }}</p>
+         <ul class="list-inline small">  {# list of stars #}
+            {% for i in range5 %}
+                {% if produs.rating.value >= i %}
+                <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                {% else %}
+                <li class="list-inline-item m-0"><i class="fa fa-star-o text-success"></i></li>
+                {% endif %}
+            {% endfor %}
+         </ul>
+    </div>
+</div>
