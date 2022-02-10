@@ -11,20 +11,19 @@
 <body>
 {% include 'navbar.html' %}
 
-<div class="d-flex flex-row m-3">
-    <div class="p-3 flex-fill" style="width: 30%; overflow: hidden">
+<div class="d-flex flex-column flex-lg-row m-3">
+    <div class="p-3 flex-fill flex-shrink-1">
 {#        filtre, sortare#}
+        <p> DATA</p>
     </div>
-    <div class="p-2 flex-fill" style="width: 70%;">
-        <div class="row row-cols-2">
+    <div class="p-2 flex-fill">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
             {% for produs_din_lista in listaproduse %}
                 <div class="col">
                     {% include 'card.html' with produs=produs_din_lista %}
                 </div>
             {% endfor %}
         </div>
-    </div>
-    <div class="p-4 flex-fill" style="width: 10%; overflow: hidden;">
     </div>
 </div>
 

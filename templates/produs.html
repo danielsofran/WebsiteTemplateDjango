@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Ie Românească</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Alex Brush' rel='stylesheet'>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "magazin/css/homestyle.css" %}">
+</head>
+<body>
+{% include 'navbar.html' %}
+
+<div id="carouselExampleFade" class="carousel slide carousel-fade m-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+        <a data-bs-toogle="modal" data-bs-target="#productmodal">
+        <img src="{{ firstimage }}" class="d-block w-100" alt="">
+        </a>
+    </div>
+    {% for image in images %}
+    <div class="carousel-item">
+        <a data-bs-toogle="modal" data-bs-target="#productmodal">
+        <img src="{{ image }}" class="d-block w-100" alt="">
+        </a>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="productmodal" tabindex="-1" aria-labelledby="productmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modalcarousel" class="carousel slide carousel-fade m-5" data-bs-ride="carousel">
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ firstimage }}" class="d-block w-100" alt="">
+                    </div>
+                    {% for image in images %}
+                    <div class="carousel-item">
+                        <img src="{{ image }}" class="d-block w-100" alt="">
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#modalcarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#modalcarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script> {# modal start #}
+var myCarousel = document.querySelector('#modalcarousel');
+var myModalEl = document.getElementById('productmodal');
+myModalEl.addEventListener('show.bs.modal', function (event) {
+    const trigger = event.relatedTarget;
+    var bsCarousel = bootstrap.Carousel.getInstance(myCarousel);
+    alert(bsCarousel.toString());
+    bsCarousel.to(trigger.dataset.bsSlideTo);
+});
+</script>
+
+{#<div class="d-flex flex-column flex-lg-row">#}
+{#    <div></div>#}
+{#    <div class="m-5">#}
+{#        <p>pret</p>#}
+{#    </div>#}
+{#</div>#}
+
+{% include 'footer.html' %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/7583353572.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
+

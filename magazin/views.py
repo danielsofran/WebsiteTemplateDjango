@@ -18,4 +18,11 @@ def galerie(request):
 
 def produs(request, id):
     produs = Produs.objects.get(id=id)
-    return render(request, "produs.html", {"produs": produs})
+    images = produs.imagini.ColectieImagini.all()
+    imglist = []
+    for img in images:
+        i = str(img).find("media")
+        imglist.append("/" + str(img)[i:].replace("\\", "/"))
+        print(imglist[-1])
+    images = imglist
+    return render(request, "produs.html", {"produs": produs, "firstimage": images[0], "images": images[1:]})
