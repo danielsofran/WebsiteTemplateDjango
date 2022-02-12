@@ -23,6 +23,11 @@ def produs(request, id):
     for img in images:
         i = str(img).find("media")
         imglist.append("/" + str(img)[i:].replace("\\", "/"))
-        print(imglist[-1])
     images = imglist
-    return render(request, "produs.html", {"produs": produs, "firstimage": images[0], "images": images[1:]})
+    return render(request, "produs.html", {
+        "produs": produs,
+        "firstimage": images[0],
+        "images": images[1:],
+        "allimages": images,
+        "allimagesindexes": zip(images[1:], range(2, len(images)+1)),
+    })
