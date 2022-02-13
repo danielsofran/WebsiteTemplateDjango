@@ -18,7 +18,8 @@ class Pret(models.Model):
 
     @property
     def pret_final(self):
-        return self.pret - self.pret * (self.reducere/100)
+        return float("{:.2f}".format(self.pret - self.pret * (self.reducere/100)))
+
     def __str__(self):
         return str(self.pret_final)
 
@@ -38,10 +39,12 @@ class Imagine(models.Model):
 
 class Specificatii(models.Model):
     marime = models.CharField("Mărime", default="XL", max_length=10)
-    gen = models.TextField("Gen", default="FEMEI", blank=False, null=False, choices=[("BARBATI", "BARBATI"), ("FEMEI", "FEMEI"), ("COPII", "COPII")])
+    material = models.CharField("Material", default="In", max_length=20)
+    gen = models.TextField("Gen", default="Femei", blank=False, null=False, choices=[("Barbati", "Barbati"), ("Femei", "Femei"), ("Copii", "Copii")])
     spalaremasina = models.BooleanField("Se spală la mașină", default=True)
     temperatura = models.IntegerField("Temperatura de spălare recomandată", default=60)
     timpspalare = models.CharField("Timpul de spălare recomandat", default="2h", max_length=10)
+    sedecoloreaza = models.BooleanField("Se decoloreaza", default=False)
     def __str__(self):
         return self.marime
 
@@ -58,6 +61,7 @@ class Produs(models.Model):
     nume = models.CharField("Denumire", max_length=50, blank=False)
     descriere = models.TextField("Descriere", blank=True)
     stoc = models.IntegerField("Stoc", default=1)
+    sters = models.BooleanField("Sters", default=False)
 
     rating = models.OneToOneField(Rating, related_name="Rating", blank=True, null=True, on_delete=models.CASCADE)
     pret = models.OneToOneField(Pret, related_name="Pret", blank=True, null=True, on_delete=models.CASCADE)

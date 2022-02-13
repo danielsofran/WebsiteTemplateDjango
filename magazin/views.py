@@ -1,6 +1,8 @@
 import os
 
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+
 from .models import Produs
 from WebsiteTemplate import settings
 # Create your views here.
@@ -12,7 +14,7 @@ def home(request):
     return render(request, "home.html", {"slideshowimages": slideshowimages[1:], "range": range(1, len(slideshowimages))})
 
 def galerie(request):
-    products = list(Produs.objects.all())
+    products = list(Produs.objects.filter(sters=False))
     products = products * 12
     return render(request, "galerie.html", {'listaproduse': products, "range5": range(1, 6)})
 
@@ -27,7 +29,18 @@ def produs(request, id):
     return render(request, "produs.html", {
         "produs": produs,
         "firstimage": images[0],
-        "images": images[1:],
         "allimages": images,
         "allimagesindexes": zip(images[1:], range(2, len(images)+1)),
+        "range5": range(5),
     })
+
+def rateprodus(request, id):
+    produs = Produs.objects.get(id=id)
+    produs.rating.count += 1
+    produs.rating.stars += int(request.GET['stars'])
+    produs.rating.save()
+    return HttpResponseRedirect(f'/galerie/{id}')
+
+
+
+

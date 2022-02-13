@@ -92,6 +92,10 @@
   color: white;
 }
 
+img.modal-image-nobs{
+  max-inline-size: 100%;
+}
+
 img.demo {
   opacity: 0.6;
 }
