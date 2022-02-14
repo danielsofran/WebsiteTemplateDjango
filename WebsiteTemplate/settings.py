@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import datetime
+import json
 import os
 from pathlib import Path
+import jsonpickle
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,52 +129,82 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-class OwnSettings:
-    showprice = True
-    allowrating = False
-    productimagepath = "Products/"
+class AutosaveJson(dict):
+    def __init__(self, **kwargs):
+        self._path = kwargs["jsonpath"]
+        super().__init__(**kwargs)
 
-    class Navbar:
-        title = u"Ie \xa0Romanească"
-        color = (127, 255, 212, 0.95) # rgba
-        #menuitemshtml = {"acasa": "",}
-        @staticmethod
-        def context():
-            return {
-                "navbartitle": OwnSettings.Navbar.title,
-                "navbarcolor": OwnSettings.Navbar.color,
-            }
+    @property
+    def path(self):
+        return self._path
 
-    class SlideShow:
-        path = MEDIA_ROOT+"\\SlideShow\\"
-        duration = 10000 # millisecounds
-        @staticmethod
-        def context():
-            return {
-                "slideshowduration": OwnSettings.SlideShow.duration
-            }
+    def __getitem__(self, item):
+        self.loadfromfile()
+        return super().__getitem__(item)
 
-    class Footer:
-        title = u"Art \xa0\xa0Traditional"
-        credits = f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate"
-        imgsource = "/media/BannerR.png"
-        @staticmethod
-        def context():
-            return {
-                "footertitle": OwnSettings.Footer.title,
-                "footercredits": OwnSettings.Footer.credits,
-                "footerimgsource": OwnSettings.Footer.imgsource,
-            }
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        self.savetofile()
 
-    class Card:
-        pass
+    def context(self):
+        self.loadfromfile()
+        return self
 
-    @staticmethod
-    def context():
-        return {
-            "showprice": OwnSettings.showprice,
-            "allowrating": OwnSettings.allowrating,
-            **OwnSettings.Navbar.context(),
-            **OwnSettings.SlideShow.context(),
-            **OwnSettings.Footer.context(),
-        }
+    def encode(self): return json.dumps(self)
+    def decode(self, str): return json.loads(str)
+
+    def savetofile(self):
+        with open(self._path, "w") as f:
+            f.write(self.encode())
+
+    def loadfromfile(self):
+        try:
+            with open(self._path) as f:
+                return self.decode(f.readline())
+        except: return False
+
+class OwnSettings(AutosaveJson):
+    def __init__(self, path="OwnSettings/ownsettings.json"):
+        self._path = path
+        if os.path.isfile(path):
+            load = self.loadfromfile()
+            super().__init__(**load)
+        else:
+            super().__init__(jsonpath=path,
+                showprice=True,
+                allowrating=False,
+                productimagepath="Products/",
+                navbar=AutosaveJson(jsonpath="OwnSettings/navbarsettings.json",
+                                    title=u"Ie \xa0Romanească",
+                                    color=(127, 255, 212, 0.95)),
+                slideshow=AutosaveJson(jsonpath="OwnSettings/slideshowsettings.json",
+                                       imgpath=MEDIA_ROOT + "\\SlideShow\\",
+                                       duration=10000),
+                footer=AutosaveJson(jsonpath="OwnSettings/footersettings.json",
+                                    title=u"Art \xa0\xa0Traditional",
+                                    credits=f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate",
+                                    imgsource="/media/BannerR.png"),
+             )
+        self.savetofile()
+
+    def context(self):
+        self.loadfromfile()
+        rez = {}
+        for key in self.keys():
+            print(key)
+            if isinstance(self[key], dict):
+                name = str(self[key]["jsonpath"])
+                index = name.find("settings")
+                index2 = name[:index].rfind("/") + 1
+                name = name[index2:index]
+                for jkey in self[key]:
+                    rez[name+jkey] = self[key][jkey]
+
+                    # RULES
+
+                    if name+jkey == "navbarcolor":
+                        rez[name + jkey] = tuple(rez[name+jkey])
+            else: rez[key] = self[key]
+        return rez
+
+ownsettings = OwnSettings()

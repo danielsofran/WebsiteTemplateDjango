@@ -10,14 +10,14 @@ from WebsiteTemplate import settings
 # Create your views here.
 
 def home(request):
-    path = settings.OwnSettings.SlideShow.path
+    path = settings.ownsettings["slideshow"]["imgpath"]
     files = os.listdir(path)
     slideshowimages = [f'media/SlideShow/{imgname}' for imgname in files]
     return render(request, "home.html", {
         "firstimage": slideshowimages[0],
         "slideshowimages": slideshowimages[1:],
         "range": range(1, len(slideshowimages)),
-        **settings.OwnSettings.context(),
+        **settings.ownsettings.context(),
     })
 
 def getlength(products, **kwargs):
@@ -98,7 +98,7 @@ def galerie(request):
         "prinstoc": sum(produs.stoc>0 for produs in _products),
         "genuri": genuri,
         **filtru,
-        **settings.OwnSettings.context(),
+        **settings.ownsettings.context(),
     })
 
 def produs(request, id):
@@ -115,7 +115,7 @@ def produs(request, id):
         "allimages": images,
         "allimagesindexes": zip(images[1:], range(2, len(images)+1)),
         "range5": range(5),
-        **settings.OwnSettings.context(),
+        **settings.ownsettings.context(),
     })
 
 def rateprodus(request, id):

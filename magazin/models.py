@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User as UserAdmin
-from WebsiteTemplate.settings import OwnSettings
+from WebsiteTemplate.settings import ownsettings
 
 class Rating(models.Model):
     stars = models.IntegerField("Stele", default=0)
@@ -26,13 +26,13 @@ class Pret(models.Model):
 
 
 class Imagini(models.Model):
-    card = models.FileField("Card Image", upload_to=OwnSettings.productimagepath, blank=False, null=True)
+    card = models.FileField("Card Image", upload_to=ownsettings["productimagepath"], blank=False, null=True)
     def __str__(self):
         return self.card.path
 
 
 class Imagine(models.Model):
-    img = models.FileField("Image", upload_to=OwnSettings.productimagepath, blank=False, null=True)
+    img = models.FileField("Image", upload_to=ownsettings["productimagepath"], blank=False, null=True)
     colectie = models.ForeignKey(Imagini, related_name="ColectieImagini", blank=True, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.img.path

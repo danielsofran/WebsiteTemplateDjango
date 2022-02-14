@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="m-1 mb-4 {% if not showprice %} d-none {% endif %}">
-                <label for="pricerange" class="form-label">Pret maxim: <span id="pretvalue">{% if pret_max is not None  %} {{ pret_max }} {% endif %}</span> RON</label>
+                <label for="pricerange" class="form-label">Pret maxim: <span id="pretvalue">{% if pret_max is not None  %} {{ pret_max }} RON {% endif %}</span></label>
                 <input type="range" class="form-range" min="100" max="2000" step="50" id="pricerange" name="pret" onchange="setprice()" oninput="setprice()" value="{{ pret_max }}">
             </div>
             <div class="m-1 mb-4">
