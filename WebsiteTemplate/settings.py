@@ -16,6 +16,8 @@ from pathlib import Path
 import jsonpickle
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from magazin.utils import isLight
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -176,14 +178,37 @@ class OwnSettings(AutosaveJson):
                 productimagepath="Products/",
                 navbar=AutosaveJson(jsonpath="OwnSettings/navbarsettings.json",
                                     title=u"Ie \xa0Romanească",
-                                    color=(127, 255, 212, 0.95)),
+                                    titlefont="Alex Brush",
+                                    color=(127, 255, 212, 0.95),
+                                    islight=isLight((127, 255, 212, 0.95))),
                 slideshow=AutosaveJson(jsonpath="OwnSettings/slideshowsettings.json",
                                        imgpath=MEDIA_ROOT + "\\SlideShow\\",
-                                       duration=10000),
+                                       duration=10000,
+                                       maxheight=500,
+                                       breakpoint=1000),
                 footer=AutosaveJson(jsonpath="OwnSettings/footersettings.json",
                                     title=u"Art \xa0\xa0Traditional",
+                                    titlefont="Alex Brush",
                                     credits=f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate",
                                     imgsource="/media/BannerR.png"),
+                card=AutosaveJson(jsonpath="OwnSettings/cardsettings.json",
+                                  color=(255, 255, 255, 0),
+                                  islight=isLight((255, 255, 255, 0)),
+                                  showtitle=True,
+                                  titlecolor=(0,0,0,1),
+                                  titlealign="center",
+                                  showprice=True,
+                                  finalpricecolor=(0,0,0,1),
+                                  reducerecolor=(255, 26, 26, 1),
+                                  initialpretcolor=(0,0,0,1),
+                                  showdescription=True,
+                                  showimage=True,
+                                  starscolor=(255, 255, 0, 1),
+                                  specificatii="marime gen rating"),
+                galerie=AutosaveJson(jsonpath="OwnSettings/galeriesettings.json",
+                                     pretmin=50,
+                                     pretmax=2000,
+                                     pas=50),
              )
         self.savetofile()
 
@@ -191,7 +216,6 @@ class OwnSettings(AutosaveJson):
         self.loadfromfile()
         rez = {}
         for key in self.keys():
-            print(key)
             if isinstance(self[key], dict):
                 name = str(self[key]["jsonpath"])
                 index = name.find("settings")
@@ -202,7 +226,7 @@ class OwnSettings(AutosaveJson):
 
                     # RULES
 
-                    if name+jkey == "navbarcolor":
+                    if "color" in jkey:
                         rez[name + jkey] = tuple(rez[name+jkey])
             else: rez[key] = self[key]
         return rez

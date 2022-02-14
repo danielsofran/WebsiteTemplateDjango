@@ -1,0 +1,6 @@
+image background for navbar
+remake image footer
+background for galerie blocks
+change navbar color to verde PRAZ
+change star color to darker
+?change card background from setting

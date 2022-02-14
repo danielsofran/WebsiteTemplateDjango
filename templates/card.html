@@ -1,15 +1,39 @@
-<div class="card rounded shadow-sm border-0 mb-3 produs">
-    <div class="card-body p-4"><img src="media/{{ produs.imagini.card }}" alt="" class="img-fluid d-block mx-auto mb-3">
-        <h5> <a href="/galerie/{{ produs.id }}" class="text-dark">{{ produs.nume }}</a></h5>
-         <p class="small text-muted font-italic">{{ produs.descriere }}</p>
-         <ul class="list-inline small">  {# list of stars #}
-            {% for i in range5 %}
-                {% if produs.rating.value >= i %}
-                <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
-                {% else %}
-                <li class="list-inline-item m-0"><i class="fa fa-star-o text-success"></i></li>
-                {% endif %}
-            {% endfor %}
-         </ul>
+<div class="card rounded shadow-sm border-0 mb-3 produs" style="background-color: rgba{{ cardcolor }}">
+    <div class="card-body p-4" style="background-color: rgba{{ cardcolor }}">
+        <a href="/galerie/{{ produs.id }}" class="text-decoration-none">
+            {% if cardshowimage %}<img src="media/{{ produs.imagini.card }}" alt="" class="img-fluid d-block mx-auto mb-3">{% endif %}
+            {% if cardshowtitle %}<h2 class="mb-4 text-{{ cardtitlealign }}" style="color: rgba{{ cardtitlecolor }}">{{ produs.nume }} </h2> {% endif %}
+        </a>
+            {% if cardshowdescription %}<p class="small {% if not cardislight %}text-light{% endif %} text-muted font-italic">{{ produs.descriere }}</p> {% endif %}
+            {% if cardshowprice %}
+                <div class="d-flex flex-row align-items-center">
+                    <h4 class="me-2 text-{% if cardislight %}dark{% else %}light{% endif %}"> Pret: </h4>
+                    <h3 class="ms-1"
+                        style="color: rgba{% if produs.pret.reducere != 0 %}{{ cardreducerecolor }}{% else %}{{ cardinitialpretcolor }}{% endif %}"
+                        >
+                        {{ produs.pret.pret_final }} RON
+                    </h3>
+                </div>
+            {% endif %}
+            {% if cardshowmarime %}
+                <div class="d-flex flex-row align-items-center text-{% if cardislight %}dark{% else %}light{% endif %}">
+                    <h4 class="me-2">Marime:</h4>
+                    <h3 class="ms-1"> {{ produs.specificatii.marime }}</h3>
+                </div>
+            {% endif %}
+            {% if cardshowrating %}
+             <div class="d-flex flex-row align-items-center">
+             <h4 class="me-3 my-auto text-{% if cardislight %}dark{% else %}light{% endif %}"> Rating: </h4>
+             <ul class="list-inline my-auto">  {# list of stars #}
+                 {% for i in range5 %}
+                     {% if produs.rating.value >= i %}
+                     <li class="list-inline-item m-0"><i class="fa fa-star" style="color: rgba{{ cardstarscolor }}"></i></li>
+                     {% else %}
+                     <li class="list-inline-item m-0"><i class="fa fa-star-o" style="color: rgba{{ cardstarscolor }}"></i></li>
+                     {% endif %}
+                 {% endfor %}
+              </ul>
+             </div>
+            {% endif %}
     </div>
 </div>

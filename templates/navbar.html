@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top fs-2"
      style="background: rgba{{ navbarcolor }}; ">
-  <h1 class="navbar-brand my-auto px-1 ms-1 me-0" style="font-family: Alex Brush; display: block; font-size: 200%" onmousedown='return false;'>{{ navbartitle }}</h1>
+  <h1 class="navbar-brand my-auto px-1 ms-1 me-0 text-{% if navbarislight %}dark{% else %}light{% endif %}" style="font-family: {{ navbartitlefont }}; display: block; font-size: 200%" onmousedown='return false;'>{{ navbartitle }}</h1>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -8,19 +8,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-1 fs-3 text-center">
         <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/"><i class="fa fa-fw fa-home"></i>  Acasă</a>
+            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" aria-current="page" href="/"><i class="fa fa-fw fa-home"></i>  Acasă</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/galerie"><i class="fas fa-images"></i>  Galerie</a>
+            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" href="/galerie"><i class="fas fa-images"></i>  Galerie</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-fw fa-landmark"></i>  Despre</a>
+            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" href="#"><i class="fa fa-fw fa-landmark"></i>  Despre</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-fw fa-envelope"></i>  Contact</a>
+            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" href="#"><i class="fa fa-fw fa-envelope"></i>  Contact</a>
         </li>
         <li class="nav-item d-none">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Admin</a>
+          <a class="nav-link disabled text-{% if navbarislight %}dark{% else %}light{% endif %}" href="#" tabindex="-1" aria-disabled="true">Admin</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-1 fs-3 text-center navbaritems">
@@ -31,7 +31,7 @@
         <div id="searchbarform ms-1">
       <form class="d-flex" >
         <input class="form-control me-2" type="search" placeholder="Caută" aria-label="Search" id="searchtext">
-        <button class="btn btn-outline-success" type="button" onclick="cauta()">Caută</button>
+        <button class="btn btn-outline-{% if navbarislight %}dark{% else %}light{% endif %}" type="button" onclick="cauta()">Caută</button>
       </form>
         </div>
     </div>

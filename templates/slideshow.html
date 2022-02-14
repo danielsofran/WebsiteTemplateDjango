@@ -1,4 +1,4 @@
-<div id="carouseldiv" class="carousel slide carousel-fade" data-bs-ride="carousel" style="display: block; max-height: 500px; overflow-y: hidden">
+<div id="carouseldiv" class="carousel slide carousel-fade" data-bs-ride="carousel" style="display: block; max-height: {{ slideshowmaxheight }}px; overflow-y: hidden">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouseldiv" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     {% for i in range %}
@@ -45,7 +45,7 @@
         var elems = document.getElementsByClassName("slideshowimage");
         for(let i=0;i<elems.length; ++i)
         {
-            if(size.width >= 1000) elems[i].classList.add("imageanimate");
+            if(size.width >= {{ slideshowbreakpoint }}) elems[i].classList.add("imageanimate");
             else elems[i].classList.remove("imageanimate");
         }
     }

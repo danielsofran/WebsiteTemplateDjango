@@ -32,7 +32,7 @@
             </div>
             <div class="m-1 mb-4 {% if not showprice %} d-none {% endif %}">
                 <label for="pricerange" class="form-label">Pret maxim: <span id="pretvalue">{% if pret_max is not None  %} {{ pret_max }} RON {% endif %}</span></label>
-                <input type="range" class="form-range" min="100" max="2000" step="50" id="pricerange" name="pret" onchange="setprice()" oninput="setprice()" value="{{ pret_max }}">
+                <input type="range" class="form-range" min="{{ galeriepretmin }}" max="{{ galeriepretmax }}" step="{{ galeriepas }}" id="pricerange" name="pret" onchange="setprice()" oninput="setprice()" value="{{ pret_max }}">
             </div>
             <div class="m-1 mb-4">
                 <label class="mb-2"> Gen</label>
@@ -64,14 +64,21 @@
             </div>
         </form>
     </div>
-    <div class="p-2 flex-fill">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+    <div class="p-2 flex-fill {% if noresult %}d-flex justify-content-center w-75{% endif %}">
+        {% if noresult %}
+            <div class="m-auto text-center text-muted flex-shrink-0 flex-fill">
+                <h1 class="display-1"> Ne pare rau!</h1>
+                <h1 class="display-4"> Nu mai exista produse<br> conform filtrului curent!</h1>
+            </div>
+        {% else %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3">
             {% for produs_din_lista in listaproduse %}
                 <div class="col">
                     {% include 'card.html' with produs=produs_din_lista %}
                 </div>
             {% endfor %}
         </div>
+        {% endif %}
     </div>
 </div>
 

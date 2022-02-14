@@ -67,8 +67,6 @@ function serialize(obj) {
 }
 function activateAlert(text, state="success"){
     alerttag = document.getElementById("alerteval")
-    alert(state)
-    alert(alerttag.classList.length)
     for(let i=0;i<alerttag.classList.length;++i)
     {
         let cls = alerttag.classList[i]
