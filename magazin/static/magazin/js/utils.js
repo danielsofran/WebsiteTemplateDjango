@@ -1,5 +1,4 @@
-function getsize()
-{
+function getsize() {
     var win = window,
         doc = document,
         docElem = doc.documentElement,
@@ -13,25 +12,20 @@ function getsize()
 function openModal() {
   document.getElementById("myModal").style.display = "block";
 }
-
 // Close the Modal
 function closeModal() {
   document.getElementById("myModal").style.display = "none";
 }
-
 var slideIndex = 1;
 showSlides(slideIndex);
-
 // Next/previous controls
 function plusSlides(n) {
   showSlides(slideIndex += n);
 }
-
 // Thumbnail image controls
 function currentSlide(n) {
   showSlides(slideIndex = n);
 }
-
 function showSlides(n) {
   var i;
   var slides = document.getElementsByClassName("mySlides");
@@ -50,6 +44,7 @@ function showSlides(n) {
   // captionText.innerHTML = dots[slideIndex-1].alt;
 }
 
+// evaluare produs
 function fillStars(index){
   if(!rated) {
       for (let i = 0; i < 5; ++i) {
@@ -64,26 +59,66 @@ function fillStars(index){
       }
   }
 }
-
+function serialize(obj) {
+  var str = [];
+  for(var p in obj)
+     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+  return str.join("&");
+}
+function activateAlert(text, state="success"){
+    alerttag = document.getElementById("alerteval")
+    alert(state)
+    alert(alerttag.classList.length)
+    for(let i=0;i<alerttag.classList.length;++i)
+    {
+        let cls = alerttag.classList[i]
+        if(cls.startsWith("alert-"))
+            alerttag.classList.remove(cls)
+    }
+    alerttag.classList.add("alert-"+state)
+    alerttag.classList.remove("d-none")
+    document.getElementById("alerttext").innerHTML = text
+    setTimeout(function () {document.getElementById("alerteval").classList.add("d-none")}, 5000 )
+}
 var rated = false
-
-function rateproduct(i)
-{
+function rateproduct(i) {
   if(!rated)
   {
-    rated = true
-    $.ajax({
-        type: 'GET',
-        url: window.location.href + "/rate",
-        data: {stars: i+1},
-        success: function (response) {
-            // more like a modal show here
-            alert("Multumim!")
-        },
-        error: function (response) {
-            // register error on server and contact admin
-            alert(response["responseJSON"]["error"]);
-        }
-    })
+    httpRequest = new XMLHttpRequest()
+    httpRequest.open('GET', window.location.href+"-----/rate/?"+serialize({stars: i+1}))
+    httpRequest.send()
+    httpRequest.onreadystatechange = function(){
+    // Process the server response here.
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+          activateAlert("<strong>Multumim!</strong> Evaluarea dvs a fost inregistrata!");
+          rated = true
+      }
+      else{
+          activateAlert('<strong>A aparut o eroare.</strong>', "danger");
+      }
+    }
+    }
   }
 }
+
+// filter
+function setprice() {
+    let range = document.getElementById("pricerange"),
+        span = document.getElementById("pretvalue");
+    span.innerText = range.value
+}
+
+function checkinput(elem, value)
+{
+    // alert(elem.getAttribute("name") + " " + value)
+    if(value.localeCompare("False") === 0){
+        if(elem.hasAttribute("checked"))
+            elem.removeAttribute("checked")
+    }
+    else{
+        if(!elem.hasAttribute("checked"))
+            elem.setAttribute("checked", "")
+    }
+}
+

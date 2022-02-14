@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import datetime
 import os
 from pathlib import Path
 
@@ -125,3 +126,53 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+class OwnSettings:
+    showprice = True
+    allowrating = False
+    productimagepath = "Products/"
+
+    class Navbar:
+        title = u"Ie \xa0Romanească"
+        color = (127, 255, 212, 0.95) # rgba
+        #menuitemshtml = {"acasa": "",}
+        @staticmethod
+        def context():
+            return {
+                "navbartitle": OwnSettings.Navbar.title,
+                "navbarcolor": OwnSettings.Navbar.color,
+            }
+
+    class SlideShow:
+        path = MEDIA_ROOT+"\\SlideShow\\"
+        duration = 10000 # millisecounds
+        @staticmethod
+        def context():
+            return {
+                "slideshowduration": OwnSettings.SlideShow.duration
+            }
+
+    class Footer:
+        title = u"Art \xa0\xa0Traditional"
+        credits = f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate"
+        imgsource = "/media/BannerR.png"
+        @staticmethod
+        def context():
+            return {
+                "footertitle": OwnSettings.Footer.title,
+                "footercredits": OwnSettings.Footer.credits,
+                "footerimgsource": OwnSettings.Footer.imgsource,
+            }
+
+    class Card:
+        pass
+
+    @staticmethod
+    def context():
+        return {
+            "showprice": OwnSettings.showprice,
+            "allowrating": OwnSettings.allowrating,
+            **OwnSettings.Navbar.context(),
+            **OwnSettings.SlideShow.context(),
+            **OwnSettings.Footer.context(),
+        }

@@ -7,7 +7,7 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="/media/SlideShow/intro1.png" class="d-block w-100 slideshowimage" alt="" data-bs-interval="10000" >
+      <img src="{{ firstimage }}" class="d-block w-100 slideshowimage" alt="" data-bs-interval="{{ slideshowduration }}" >
 {#      <div class="carousel-caption d-none d-md-block mb-1">#}
 {#        <h5>First slide label</h5>#}
 {#        <p>Some representative placeholder content for the first slide.</p>#}
@@ -16,7 +16,7 @@
         {% for imgpath in slideshowimages %}
             <div class="carousel-item">
             {% with imgpath as image_static %}
-            <img src="{{ imgpath }}" class="d-block w-100 slideshowimage" data-bs-interval="10000" >
+            <img src="{{ imgpath }}" class="d-block w-100 slideshowimage" data-bs-interval="{{ slideshowduration }}" >
             {% endwith %}
 {#            <div class="carousel-caption d-none d-md-block mb-1">#}
 {#                <h5>First slide label</h5>#}

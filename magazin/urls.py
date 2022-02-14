@@ -22,4 +22,5 @@ urlpatterns = [
     path("galerie", views.galerie, name="galerie"),
     path("galerie/<int:id>", views.produs, name="produs"),
     path("galerie/<int:id>/rate/", views.rateprodus, name="rateprodus"),
+    path("search", views.search, name="search"),
 ]
