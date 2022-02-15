@@ -8,3 +8,9 @@ function getsize() {
         y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
     return {width:x, height:y};
 }
+
+function istall()
+{
+    let size = getsize()
+    return size.height / size.width > 1.5;
+}

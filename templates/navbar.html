@@ -8,14 +8,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-1 fs-3 text-center">
         <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/"
+            <a class="nav-link" aria-current="page" href="{% url 'home' %}"
                style="color: rgba{{ navbaritemcolor }}"
                onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
                onmouseover="this.style.color='rgba{{ navbaritemhovercolor }}';">
                 <i class="fa fa-fw fa-home"></i>  Acasă</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="/galerie"
+            <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="{% url 'galerie' %}"
             onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
             onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"><i class="fas fa-images"></i>  Galerie</a>
         </li>
@@ -35,17 +35,21 @@
           onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">Admin</a>
         </li>
       </ul>
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-1 fs-3 text-center navbaritems">
-        <li class="nav-item d-none"
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-1 fs-3 text-center">
+        <li class="nav-item d-block {% if navbarhiselogin %}fs-5{% endif %}">
+            <a class="nav-link" aria-current="page" href="{% url 'login' %}"  {% if navbarhidelogin %}style="color: rgba(0,0,0,1)"{% endif %}
+            {% if not navbarhidelogin %}
             onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
-            onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">
-            <a class="nav-link" aria-current="page" href="#"><span title="Login" class="navbaricon"><i class="fas fa-sign-in-alt"></i></span>  <span class="navbartitle">Login</span></a>
+            onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"
+            {% endif %}>
+                {% if not navbarhidelogin %} <i class="fas fa-sign-in-alt"></i>  Login {% endif %}
+            </a>
         </li>
       </ul>
         <div id="searchbarform ms-1">
       <form class="d-flex" >
-        <input class="form-control me-2" type="search" placeholder="Caută" aria-label="Search" id="searchtext">
-        <button class="btn btn-outline-{% if navbarislight %}dark{% else %}light{% endif %}" type="button" onclick="cauta()">Caută</button>
+        <input class="form-control me-2" type="search" placeholder="Nume, mărime, gen" aria-label="Search" id="searchtext">
+        <button class="btn btn-outline-{% if navbarislight %}dark{% else %}light{% endif %}" type="button" onclick="cauta()" id="searchbtn"> Caută</button>
       </form>
         </div>
     </div>
@@ -57,4 +61,35 @@
         let text = document.getElementById("searchtext").value
         window.location = "/search?text="+text
     }
+    function navbar_resize(event){
+        // increase font size of items at tall screens
+        var tags = document.getElementsByClassName("nav-item")
+        for(let i=0;i<tags.length;++i){
+            if(istall()){
+                tags[i].classList.remove("fs-3")
+                tags[i].classList.add("display-2")
+                tags[i].classList.add("fw-normal")
+                tags[i].classList.add("my-2")
+            }
+            else{
+                tags[i].classList.add("fs-3")
+                tags[i].classList.remove("display-2")
+                tags[i].classList.remove("fw-normal")
+                tags[i].classList.remove("my-2")
+            }
+        }
+        let search = document.getElementById("searchtext")
+        let searchbtn = document.getElementById("searchbtn")
+        if(istall())
+        {
+            search.classList.add("input-lg")
+            searchbtn.classList.add("btn-lg")
+        }
+        else{
+            search.classList.remove("input-lg")
+            searchbtn.classList.remove("btn-lg")
+        }
+    }
+    window.addEventListener("resize", navbar_resize)
+    navbar_resize(null)
 </script>

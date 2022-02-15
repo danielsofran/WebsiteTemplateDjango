@@ -17,8 +17,8 @@ function currentSlide(n) {
   showSlides(slideIndex = n);
 }
 function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides-md");
+  let i;
+  let slides = document.getElementsByClassName("mySlides-md");
   // var dots = document.getElementsByClassName("demo");
   // var captionText = document.getElementById("caption");
   if (n > slides.length) {slideIndex = 1}

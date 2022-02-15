@@ -132,6 +132,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# region AUTOSAVEJSON
 class AutosaveJson(dict):
     def __init__(self, **kwargs):
         self._path = kwargs["jsonpath"]
@@ -181,11 +182,13 @@ class OwnSettings(AutosaveJson):
                 navbar=AutosaveJson(jsonpath="OwnSettings/navbarsettings.json",
                                     title=u"Ie \xa0Romanească",
                                     titlefont="Alex Brush",
+                                    fontmultiplier=200,
                                     titlecolor=(0,0,0,1),
                                     itemcolor=(77,77,77,0.8),
                                     itemhovercolor=(179, 179, 179, 0.9),
                                     color=(127, 255, 212, 0.95),
-                                    islight=isLight((127, 255, 212, 0.95))),
+                                    islight=isLight((127, 255, 212, 0.95)),
+                                    hidelogin=False),
                 slideshow=AutosaveJson(jsonpath="OwnSettings/slideshowsettings.json",
                                        imgpath=MEDIA_ROOT + "\\SlideShow\\",
                                        duration=10000,
@@ -194,6 +197,9 @@ class OwnSettings(AutosaveJson):
                 footer=AutosaveJson(jsonpath="OwnSettings/footersettings.json",
                                     title=u"Art \xa0\xa0Traditional",
                                     titlefont="Alex Brush",
+                                    fontmultiplier=200,
+                                    fcolor=(255, 255, 255, 1),
+                                    bgcolor=(33, 37, 41, 1),
                                     credits=f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate",
                                     imgsource="/media/BannerR.png"),
                 card=AutosaveJson(jsonpath="OwnSettings/cardsettings.json",
@@ -235,5 +241,5 @@ class OwnSettings(AutosaveJson):
                         rez[name + jkey] = tuple(rez[name+jkey])
             else: rez[key] = self[key]
         return rez
-
+# endregion
 ownsettings = OwnSettings()

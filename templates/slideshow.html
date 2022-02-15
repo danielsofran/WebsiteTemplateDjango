@@ -40,14 +40,22 @@
 <script>
     function slideshow_resize(event)
     {
+        var elems = document.getElementsByClassName("slideshowimage");
+        {% if slideshowbreakpoint == "tall" %}
+            for(let i=0;i<elems.length; ++i)
+            {
+                if(!istall()) elems[i].classList.add("imageanimate");
+                else elems[i].classList.remove("imageanimate");
+            }
+        {% else %}
         let size = getsize();
         {#document.getElementById("carouseldiv").style.maxHeight = Math.floor(size.height/2);#}
-        var elems = document.getElementsByClassName("slideshowimage");
         for(let i=0;i<elems.length; ++i)
         {
             if(size.width >= {{ slideshowbreakpoint }}) elems[i].classList.add("imageanimate");
             else elems[i].classList.remove("imageanimate");
         }
+        {% endif %}
     }
     window.addEventListener("resize", slideshow_resize);
     slideshow_resize(null);

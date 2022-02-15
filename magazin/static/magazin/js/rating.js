@@ -15,7 +15,7 @@ function fillStars(index){
 }
 
 function activateAlert(text, state="success"){
-    alerttag = document.getElementById("alerteval")
+    let alerttag = document.getElementById("alerteval")
     for(let i=0;i<alerttag.classList.length;++i)
     {
         let cls = alerttag.classList[i]
@@ -29,8 +29,8 @@ function activateAlert(text, state="success"){
 }
 
 function serialize(obj) {
-  var str = [];
-  for(var p in obj)
+  let str = [];
+  for(let p in obj)
      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
   return str.join("&");
 }
@@ -40,7 +40,7 @@ var rated = false
 function rateproduct(i) {
   if(!rated)
   {
-    httpRequest = new XMLHttpRequest()
+    let httpRequest = new XMLHttpRequest()
     httpRequest.open('GET', window.location.href+"-----/rate/?"+serialize({stars: i+1}))
     httpRequest.send()
     httpRequest.onreadystatechange = function(){

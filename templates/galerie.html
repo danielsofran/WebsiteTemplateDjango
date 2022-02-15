@@ -5,6 +5,7 @@
     <div class="p-3 flex-fill flex-shrink-0 fs-5">
         <!-- Filtre-->
         <form class="d-flex flex-column">
+            {% csrf_token %}
             <div class="m-1 mb-4">
                 <label class="mb-2">Disponibilitate </label>
                 <div class="form-check">

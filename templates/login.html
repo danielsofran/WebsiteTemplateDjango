@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <h1 class="fs-1 text-centered m-5">Login</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show mx-5" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <form class="m-5 me-auto " style=" max-inline-size: 80%;max-width: 500px;" method="POST">
+        {% csrf_token %}
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Nume de utilizator/Email</label>
+        <input type="text" class="form-control me-5" id="exampleInputEmail1" aria-describedby="userHelp" name="username">
+        <div id="userHelp" class="form-text"> Introduceti numele de utilizator sau email ul</div>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Parola</label>
+        <input type="password" class="form-control me-5" id="exampleInputPassword1" name="password">
+      </div>
+      <button type="submit" class="btn btn-primary">Log in</button>
+    </form>
+{% endblock %}
