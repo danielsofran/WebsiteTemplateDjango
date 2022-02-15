@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top fs-2"
      style="background: rgba{{ navbarcolor }}; ">
-  <h1 class="navbar-brand my-auto px-1 ms-1 me-0 text-{% if navbarislight %}dark{% else %}light{% endif %}" style="font-family: {{ navbartitlefont }}; display: block; font-size: 200%" onmousedown='return false;'>{{ navbartitle }}</h1>
+  <h1 class="navbar-brand my-auto px-1 ms-1 me-0" style="font-family: {{ navbartitlefont }}; color: rgba{{ navbartitlecolor }}; display: block; font-size: 200%" onmousedown='return false;'>{{ navbartitle }}</h1>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -8,23 +8,37 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-1 fs-3 text-center">
         <li class="nav-item">
-            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" aria-current="page" href="/"><i class="fa fa-fw fa-home"></i>  Acasă</a>
+            <a class="nav-link" aria-current="page" href="/"
+               style="color: rgba{{ navbaritemcolor }}"
+               onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
+               onmouseover="this.style.color='rgba{{ navbaritemhovercolor }}';">
+                <i class="fa fa-fw fa-home"></i>  Acasă</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" href="/galerie"><i class="fas fa-images"></i>  Galerie</a>
+            <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="/galerie"
+            onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
+            onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"><i class="fas fa-images"></i>  Galerie</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" href="#"><i class="fa fa-fw fa-landmark"></i>  Despre</a>
+            <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="#"
+            onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
+            onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"><i class="fa fa-fw fa-landmark"></i>  Despre</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-{% if navbarislight %}dark{% else %}light{% endif %}" href="#"><i class="fa fa-fw fa-envelope"></i>  Contact</a>
+            <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="#"
+            onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
+            onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"><i class="fa fa-fw fa-envelope"></i>  Contact</a>
         </li>
         <li class="nav-item d-none">
-          <a class="nav-link disabled text-{% if navbarislight %}dark{% else %}light{% endif %}" href="#" tabindex="-1" aria-disabled="true">Admin</a>
+          <a class="nav-link disabled" style="color: rgba{{ navbaritemcolor }}" href="#" tabindex="-1" aria-disabled="true"
+          onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
+          onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">Admin</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-1 fs-3 text-center navbaritems">
-        <li class="nav-item d-none">
+        <li class="nav-item d-none"
+            onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
+            onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">
             <a class="nav-link" aria-current="page" href="#"><span title="Login" class="navbaricon"><i class="fas fa-sign-in-alt"></i></span>  <span class="navbartitle">Login</span></a>
         </li>
       </ul>

@@ -8,12 +8,6 @@
     animation: action 15s alternate infinite;
 }
 
-.test_container{
-    display: block !important;
-    background-color: lightgreen;
-    border: 1px solid red !important;
-}
-
 @-webkit-keyframes action {
     0% { transform: translateY(-10%); }
     100% { transform: translateY(-45%); }
@@ -22,16 +16,4 @@
 @keyframes action {
     0% { transform: translateY(-10%); }
     100% { transform: translateY(-45%); }
-}
-
-@keyframes greyscale-fade-in {
-    0%   { -webkit-filter: grayscale(100%); }
-    100% { -webkit-filter: grayscale(0%); }
-}
-
-.fadegray {
-    display: inline-block;
-    border-radius: 60%;
-    background-color: aqua;
-    animation: greyscale-fade-in 5s ease-in forwards alternate infinite;
 }

@@ -23,6 +23,8 @@ from WebsiteTemplate import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("magazin.urls")),
+    path("login/", include("django.contrib.auth.urls")),
+    path("login/", include("loginapp.urls")),
 ]
 
 if settings.DEBUG:

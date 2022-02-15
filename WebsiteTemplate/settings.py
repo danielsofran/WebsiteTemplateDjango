@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'magazin',
+    'loginapp',
 ]
 
 MIDDLEWARE = [
@@ -175,10 +176,14 @@ class OwnSettings(AutosaveJson):
             super().__init__(jsonpath=path,
                 showprice=True,
                 allowrating=False,
+                title="Art Traditional",
                 productimagepath="Products/",
                 navbar=AutosaveJson(jsonpath="OwnSettings/navbarsettings.json",
                                     title=u"Ie \xa0Romanească",
                                     titlefont="Alex Brush",
+                                    titlecolor=(0,0,0,1),
+                                    itemcolor=(77,77,77,0.8),
+                                    itemhovercolor=(179, 179, 179, 0.9),
                                     color=(127, 255, 212, 0.95),
                                     islight=isLight((127, 255, 212, 0.95))),
                 slideshow=AutosaveJson(jsonpath="OwnSettings/slideshowsettings.json",

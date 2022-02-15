@@ -23,7 +23,7 @@
 }
 
 /* The Close Button */
-.close {
+.close-md {
   color: white;
   position: absolute;
   top: 10px;
@@ -32,15 +32,15 @@
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close-md:hover,
+.close-md:focus {
   color: #999;
   text-decoration: none;
   cursor: pointer;
 }
 
 /* Hide the slides by default */
-.mySlides {
+.mySlides{
   display: none;
 }
 
@@ -76,7 +76,7 @@
 }
 
 /* Number text (1/3 etc) */
-.numbertext {
+.numbertext-md {
   color: #f2f2f2;
   font-size: 12px;
   padding: 8px 12px;

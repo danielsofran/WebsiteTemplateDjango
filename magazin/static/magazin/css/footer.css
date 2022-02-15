@@ -1,0 +1,12 @@
+/* footer button */
+@keyframes greyscale-fade-in {
+    0%   { -webkit-filter: grayscale(100%); }
+    100% { -webkit-filter: grayscale(0%); }
+}
+
+.fadegray {
+    display: inline-block;
+    border-radius: 60%;
+    background-color: aqua;
+    animation: greyscale-fade-in 5s ease-in forwards alternate infinite;
+}
