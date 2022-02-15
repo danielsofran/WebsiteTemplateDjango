@@ -29,20 +29,24 @@
             onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
             onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"><i class="fa fa-fw fa-envelope"></i>  Contact</a>
         </li>
-        <li class="nav-item d-none">
-          <a class="nav-link disabled" style="color: rgba{{ navbaritemcolor }}" href="#" tabindex="-1" aria-disabled="true"
+        <li class="nav-item {% if not user.is_superuser %}d-none{% endif %}">
+          <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="#"
           onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
           onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">Admin</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-1 fs-3 text-center">
-        <li class="nav-item d-block {% if navbarhiselogin %}fs-5{% endif %}">
-            <a class="nav-link" aria-current="page" href="{% url 'login' %}"  {% if navbarhidelogin %}style="color: rgba(0,0,0,1)"{% endif %}
+        <li class="nav-item d-block {% if navbarhidelogin %}fs-5{% endif %}">
+            <a class="nav-link" aria-current="page" href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}"  {% if navbarhidelogin %}style="color: rgba(0,0,0,1)"{% endif %}
             {% if not navbarhidelogin %}
             onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
             onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"
             {% endif %}>
-                {% if not navbarhidelogin %} <i class="fas fa-sign-in-alt"></i>  Login {% endif %}
+            {% if not user.is_authenticated %}
+                <i class="fas fa-sign-in-alt"></i>  {% if not navbarhidelogin %}Login{% endif %}
+            {% else %}
+                <i class="fas fa-sign-out-alt"></i>  {% if not navbarhidelogin %}Logout{% endif %}
+            {% endif %}
             </a>
         </li>
       </ul>

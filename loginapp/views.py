@@ -24,12 +24,10 @@ def login_user(request):
         if user is not None:
             login(request, user)
             return redirect('home')
-
     else:
         return render(request, 'login.html', {**ownsettings.context()})
 
 
 def logout_user(request):
     logout(request)
-    messages.success(request, ("You Were Logged Out!"))
     return redirect('home')
