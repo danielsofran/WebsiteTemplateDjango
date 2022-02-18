@@ -121,19 +121,25 @@ def modify(request):
             formimagine = ImagineForm
         else:
             formgeneral = GeneralForm
-            if "rating" in saved:
-                print(context_2(saved["rating"]))
-                formrating = RatingForm(initial=context_2(saved["rating"]))
+            if "rating" in saved: formrating = RatingForm(initial=context_2(saved["rating"]))
             else: formrating = RatingForm
             if "pret" in saved: formpret = PretForm(initial=context_2(saved["pret"]))
             else: formpret = PretForm
-            if "card" in saved: formimagini = ImaginiForm(initial=context_2(saved["card"]))
+            if "card" in saved:
+                formimagini = ImaginiForm(initial=context_2(saved["card"]))
+                imgs = Imagine.objects.filter(colectie_id=saved["card"].id)
+                cdict["imglen"] = imgs.count()
+                limg = []
+                for img, i in zip(imgs.all(), range(imgs.count())):
+                    limg.append((img.img, i + 1))
+                cdict["imgs"] = limg
+                cdict["rangeotherimgs"] = range(cdict["imglen"], 21)
             else: formimagini = ImaginiForm
             if "specificatii" in saved: formspecificatii = SpecificatiiForm(initial=context_2(saved["specificatii"]))
             else: formspecificatii = SpecificatiiForm
-            formimagine = ImagineForm
+
         cdict.update({
-            'formgeneral': formgeneral, 'formrating': formrating, 'formpret': formpret, 'formimagini': formimagini, "formimagine": formimagine, 'formspecificatii': formspecificatii,
+            'formgeneral': formgeneral, 'formrating': formrating, 'formpret': formpret, 'formimagini': formimagini, 'formspecificatii': formspecificatii,
             **context(OwnSettings.objects.first())})
         if not "rangeotherimgs" in cdict:
             cdict["rangeotherimgs"] = range(1, 21)
@@ -166,14 +172,23 @@ def modify(request):
                 except:
                     messages.success(request, "NU toate campurile au fost completate!")
                     return redirect('modify')
+            else:
+                print("UPDATE")
         elif "rating" in request.POST:
             form = RatingForm(request.POST)
             if form.is_valid():
                 saved["rating"] = form.save()
+            else:
+                messages.success(request, "Rating invalid!")
+                return redirect('modify')
         elif "pret" in request.POST:
             form = PretForm(request.POST)
             if form.is_valid():
                 saved["pret"] = form.save()
+            else:
+                messages.success(request, "Pret invalid!")
+                assert False
+                return redirect('modify')
         elif "imagini" in request.POST:
             iscard = False
             if "card" in request.FILES:
@@ -184,11 +199,14 @@ def modify(request):
                     if f"img{i}" in request.FILES:
                         saved["imgs"] = Imagine.objects.create(img=request.FILES[f'img{i}'], colectie=saved['card'])
             else:
-                messages.success(request, "Nu aveti un card selectat!")
+                messages.success(request, "Nu aveti o imagine Card selectata!")
                 return redirect('modify')
         elif "specificatii" in request.POST:
             form = SpecificatiiForm(request.POST)
             if form.is_valid():
                 saved["specificatii"] = form.save()
+            else:
+                messages.success(request, "Specificatii invalide!")
+                return redirect('modify')
         messages.success(request, "Setari partiale salvate!")
         return redirect("modify")
