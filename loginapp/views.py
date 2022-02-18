@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.forms import UserCreationForm
+
+from loginapp.models import context_2
+from magazin.forms import *
 from .models import context, OwnSettings
 from .forms import *
 from WebsiteTemplate import settings
@@ -37,12 +40,12 @@ def logout_user(request):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_(request):
     if request.method == "GET":
-        formgeneral = OwnSettingsForm
-        formnavbar = NavbarForm
-        formslideshow = SlideShowForm
-        formgalerie = GalerieForm
-        formfooter = FooterForm
-        formcard = CardForm
+        formgeneral = OwnSettingsForm(initial=context_2(OwnSettings.objects.first()))
+        formnavbar = NavbarForm(initial=context_2(NavbarSettings.objects.last()))
+        formslideshow = SlideShowForm(initial=context_2(SlideShowSettings.objects.last()))
+        formgalerie = GalerieForm(initial=context_2(GalerieSettings.objects.last()))
+        formfooter = FooterForm(initial=context_2(GalerieSettings.objects.last()))
+        formcard = CardForm(initial=context_2(CardSettings.objects.last()))
         return render(request, "admingeneral.html", {"formgeneral": formgeneral, 'formnavbar' : formnavbar, 'formslideshow' : formslideshow, 'formgalerie' : formgalerie, 'formfooter' : formfooter, 'formcard' : formcard,  **context(OwnSettings.objects.first())})
     else: # request.POST["VIEW"]=="test":
         if "general" in request.POST:
@@ -90,3 +93,102 @@ def test(request):
 def reset(request):
     OwnSettings.objects.all().delete()
     return redirect('admin')
+
+saved = {}
+@user_passes_test(lambda u: u.is_superuser)
+def modify(request):
+    global saved
+    if request.method == "GET":
+        cdict = {}
+        if 'produs' in request.GET:
+            produs = Produs.objects.get(id=int(request.GET["produs"]))
+            formgeneral = GeneralForm(initial=context_2(produs))
+            if "rating" in saved: formrating = RatingForm(initial=context_2(saved["rating"]))
+            else: formrating = RatingForm(initial=context_2(produs.rating))
+            if "pret" in saved: formpret = PretForm(initial=context_2(saved["pret"]))
+            else: formpret = PretForm(initial=context_2(produs.pret))
+            if "card" in saved: formimagini = ImaginiForm(initial=context_2(saved["card"]))
+            else: formimagini = ImaginiForm(initial=context_2(produs.imagini))
+            if "specificatii" in saved: formspecificatii = SpecificatiiForm(initial=context_2(saved["specificatii"]))
+            else: formspecificatii = SpecificatiiForm(initial=context_2(produs.specificatii))
+            imgs = Imagine.objects.filter(colectie_id=produs.imagini.id)
+            cdict["imglen"] = imgs.count()
+            limg = []
+            for img, i in zip(imgs.all(), range(imgs.count())):
+                limg.append((img.img, i+1))
+            cdict["imgs"] = limg
+            cdict["rangeotherimgs"] = range(cdict["imglen"], 21)
+            formimagine = ImagineForm
+        else:
+            formgeneral = GeneralForm
+            if "rating" in saved:
+                print(context_2(saved["rating"]))
+                formrating = RatingForm(initial=context_2(saved["rating"]))
+            else: formrating = RatingForm
+            if "pret" in saved: formpret = PretForm(initial=context_2(saved["pret"]))
+            else: formpret = PretForm
+            if "card" in saved: formimagini = ImaginiForm(initial=context_2(saved["card"]))
+            else: formimagini = ImaginiForm
+            if "specificatii" in saved: formspecificatii = SpecificatiiForm(initial=context_2(saved["specificatii"]))
+            else: formspecificatii = SpecificatiiForm
+            formimagine = ImagineForm
+        cdict.update({
+            'formgeneral': formgeneral, 'formrating': formrating, 'formpret': formpret, 'formimagini': formimagini, "formimagine": formimagine, 'formspecificatii': formspecificatii,
+            **context(OwnSettings.objects.first())})
+        if not "rangeotherimgs" in cdict:
+            cdict["rangeotherimgs"] = range(1, 21)
+        #cdict["produsul"] = produs
+        return render(request, 'modify.html', cdict)
+    else:
+        if "general" in request.POST:
+            produs = None
+            if "produs" in request.GET:
+                produs = Produs.objects.get(id=int(request.GET['produs']))
+            if produs is None: # INSERT
+                for key in ["rating", "pret", "card", "imgs", "specificatii"]:
+                    if not key in saved:
+                        messages.success(request, f"{key} nesetat!")
+                        return redirect("modify")
+                try:
+                    createdict  = {
+                        "nume" : request.POST['nume'],
+                        "descriere" : request.POST['descriere'],
+                        "stoc": int(request.POST['stoc']),
+                        "sters": "sters" in request.POST,
+                    }
+                    createdict.update({
+                        k: saved[k] for k in ["rating", "pret", "card", "specificatii"]
+                    })
+                    produs = Produs.objects.create(**createdict)
+                    messages.success(request, "Produsul a fost adaugat!")
+                    saved.clear()  # daca nu au fost erori, operatia s-a efectuat cu success
+                    return redirect('modify')
+                except:
+                    messages.success(request, "NU toate campurile au fost completate!")
+                    return redirect('modify')
+        elif "rating" in request.POST:
+            form = RatingForm(request.POST)
+            if form.is_valid():
+                saved["rating"] = form.save()
+        elif "pret" in request.POST:
+            form = PretForm(request.POST)
+            if form.is_valid():
+                saved["pret"] = form.save()
+        elif "imagini" in request.POST:
+            iscard = False
+            if "card" in request.FILES:
+                saved["card"] = Imagini.objects.create(card=request.FILES['card'])
+                iscard = True
+            if iscard:
+                for i in range(1, 21):
+                    if f"img{i}" in request.FILES:
+                        saved["imgs"] = Imagine.objects.create(img=request.FILES[f'img{i}'], colectie=saved['card'])
+            else:
+                messages.success(request, "Nu aveti un card selectat!")
+                return redirect('modify')
+        elif "specificatii" in request.POST:
+            form = SpecificatiiForm(request.POST)
+            if form.is_valid():
+                saved["specificatii"] = form.save()
+        messages.success(request, "Setari partiale salvate!")
+        return redirect("modify")

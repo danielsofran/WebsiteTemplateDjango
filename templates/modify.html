@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="m-5">
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show mx-5 mb-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+<h1 class="mb-5 display-5 fw-normal"> Gestionare produse</h1>
+
+{% if produsul %}
+    {% include 'card.html' with produs=produsul %}
+{% endif %}
+<form class="fs-5 mb-5" method="POST">
+    {% csrf_token %}
+    <h4>General</h4>
+    {{ formgeneral.as_p }}
+    <button type="submit" class="btn btn-primary ms-5" name='general'>Salveaza</button>
+</form>
+<form class="fs-5 mb-5" method="POST">
+    {% csrf_token %}
+    <h4>Rating</h4>
+    {{ formrating.as_p }}
+    <button type="submit" class="btn btn-primary ms-5" name='rating'>Salveaza</button>
+</form>
+<form class="fs-5 mb-5" method="POST">
+    {% csrf_token %}
+    <h4>Pret</h4>
+    {{ formpret.as_p }}
+    <button type="submit" class="btn btn-primary ms-5" name='pret'>Salveaza</button>
+</form>
+<form class="fs-5 mb-5" method="POST" enctype="multipart/form-data" id="fileform">
+    {% csrf_token %}
+    <h4>Imagini</h4>
+    {{ formimagini.as_p }}
+    {% for image, index in imgs %}
+        <p id="imgp{{ index }}">
+            <label for="img{{ index }}">Image {{ index }}:</label>
+            Currently: <a href="/media/{{ image }}">{{ image }}</a><br>
+            Change: <input type="file" name="img{{ index }}" id="imgp{{ index }}">
+        </p>
+    {% endfor %}
+    {% for index in rangeotherimgs %}
+        <p class="d-none" id="imgp{{ index }}">
+          <label for="id_img{{ index }}">Image {{ index }}:</label>
+          <input type="file" name="img{{ index }}" id="id_img{{ index }}">
+        </p>
+    {% endfor %}
+    <button type="button" class="btn btn-success me-5" onclick="addField()"> Adauga imagine</button>
+    <button type="submit" class="btn btn-primary ms-5" name='imagini'>Salveaza</button>
+</form>
+<form class="fs-5 mb-5" method="POST">
+    {% csrf_token %}
+    <h4>Specificatii</h4>
+    {{ formspecificatii.as_p }}
+    <button type="submit" class="btn btn-primary ms-5" name='specificatii'>Salveaza</button>
+</form>
+    <button type="button" class="btn btn-danger" onclick="window.location.href = '{% url 'admin' %}'"> Reseteaza </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var index = {{ imglen }}+1
+    function addField(){
+        let p = document.getElementById("imgp"+index)
+        p.classList.remove("d-none")
+        index++
+    }
+</script>
+{% endblock %}

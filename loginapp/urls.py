@@ -7,5 +7,6 @@ urlpatterns = [
     path("admin", views.admin_, name="admin"),
     path('admin/test', views.test, name="test"),
     path('admin/reset', views.reset, name="reset"),
+    path('admin/modify', views.modify, name="modify"),
     # path('register_user', views.register_user, name='register_user'),
 ]

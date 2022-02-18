@@ -1,6 +1,6 @@
 from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
-from django.db.models import OneToOneField
+from django.db.models import OneToOneField, OneToOneRel, ManyToOneRel
 
 from magazin.utils import isLight, stringtocolor
 from WebsiteTemplate.settings import MEDIA_ROOT
@@ -84,22 +84,23 @@ def context_old(setare): # determina context dict-ul
 def context_2(setare): # determina context dict-ul
     # get current setting
     rez = {}
-    asocs={"navbar":NavbarSettings, "card":CardSettings, "slideshow": SlideShowSettings, "galerie": GalerieSettings, "footer":FooterSettings}
-    for field in OwnSettings._meta.get_fields():
+    for field in setare._meta.get_fields():
+        if isinstance(field, (OneToOneField, OneToOneRel, ManyToOneRel)) or field.name == "id": continue
         # print(field.name)
-        if isinstance(field, OneToOneField):
-            obj = setare._meta.get_field(field.name).related_model.objects.last()
-            for field2 in setare._meta.get_field(field.name).related_model._meta.get_fields():
-                if field2.name != field.name and field2.name != "id":
-                    # print("\t"+field2.name)
-                    # print("\t\t"+str(field2.value_from_object(getattr(setare, field.name))))
-                    if "color" in field2.name:
-                        #obj = asocs[field.name].objects.last()
-                        rez[field.name + field2.name] = stringtocolor(str(field2.value_from_object(obj)))
-                        # rez[field.name+field2.name] = stringtocolor(str(field2.value_from_object(getattr(setare, field.name))))
-                        rez[field.name+"islight"] = isLight(rez[field.name+field2.name])
-                    else: rez[field.name+field2.name] = field2.value_from_object(obj)
-        else: rez[field.name] = field.value_from_object(setare)
+        # if isinstance(field, OneToOneField):
+        #     obj = setare._meta.get_field(field.name).related_model.objects.last()
+        #     for field2 in setare._meta.get_field(field.name).related_model._meta.get_fields():
+        #         if field2.name != field.name and field2.name != "id":
+        #             # print("\t"+field2.name)
+        #             # print("\t\t"+str(field2.value_from_object(getattr(setare, field.name))))
+        #             if "color" in field2.name:
+        #                 #obj = asocs[field.name].objects.last()
+        #                 rez[field.name + field2.name] = stringtocolor(str(field2.value_from_object(obj)))
+        #                 # rez[field.name+field2.name] = stringtocolor(str(field2.value_from_object(getattr(setare, field.name))))
+        #                 rez[field.name+"islight"] = isLight(rez[field.name+field2.name])
+        #             else: rez[field.name+field2.name] = field2.value_from_object(obj)
+        # else:
+        rez[field.name] = field.value_from_object(setare)
     return rez
 
 def context(setare): # determina context dict-ul

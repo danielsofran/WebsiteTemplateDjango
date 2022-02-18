@@ -40,7 +40,7 @@
           onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
           onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">Admin</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Gestioneaza produse</a></li>
+            <li><a class="dropdown-item" href="{% url 'modify' %}">Gestioneaza produse</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{% url 'admin' %}">Setari generale</a></li>
           </ul>
