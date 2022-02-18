@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="alert alert-warning alert-dismissible fade show m-5" role="alert">
+    Sunteti in versiunea de test. Numai dvs vedeti modificarile. Pentru a fi disponibile tuturor, este necesar sa le salvati.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<form class="fs-5 m-5" method="POST">
+    {% csrf_token %}
+    <input class="form-control invisible" type="text" value="save" name="VIEW">
+    <div class="d-flex flex-row justify-content-around m-1 mb-4 align-self-center">
+        <button type="button" class="btn btn-danger" onclick="window.location.href='{% url 'admin' %}'"> Sterge modificarile</button>
+        <button type="submit" class="btn btn-success">Salveaza modificarile</button>
+    </div>
+</form>
+{% endblock %}

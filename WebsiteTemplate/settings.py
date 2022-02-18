@@ -123,6 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'magazin/static/')
 STATIC_URL = 'magazin/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -132,114 +133,51 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# region AUTOSAVEJSON
-class AutosaveJson(dict):
-    def __init__(self, **kwargs):
-        self._path = kwargs["jsonpath"]
-        super().__init__(**kwargs)
-
-    @property
-    def path(self):
-        return self._path
-
-    def __getitem__(self, item):
-        self.loadfromfile()
-        return super().__getitem__(item)
-
-    def __setitem__(self, key, value):
-        super().__setitem__(key, value)
-        self.savetofile()
-
-    def context(self):
-        self.loadfromfile()
-        return self
-
-    def encode(self): return json.dumps(self)
-    def decode(self, str): return json.loads(str)
-
-    def savetofile(self):
-        with open(self._path, "w") as f:
-            f.write(self.encode())
-
-    def loadfromfile(self):
-        try:
-            with open(self._path) as f:
-                return self.decode(f.readline())
-        except: return False
-
-class OwnSettings(AutosaveJson):
-    def __init__(self, path="OwnSettings/ownsettings.json"):
-        self._path = path
-        if os.path.isfile(path):
-            load = self.loadfromfile()
-            super().__init__(**load)
-        else:
-            super().__init__(jsonpath=path,
-                showprice=True,
-                allowrating=False,
-                title="Art Traditional",
-                productimagepath="Products/",
-                navbar=AutosaveJson(jsonpath="OwnSettings/navbarsettings.json",
-                                    title=u"Ie \xa0Romanească",
-                                    titlefont="Alex Brush",
-                                    fontmultiplier=200,
-                                    titlecolor=(0,0,0,1),
-                                    itemcolor=(77,77,77,0.8),
-                                    itemhovercolor=(179, 179, 179, 0.9),
-                                    color=(127, 255, 212, 0.95),
-                                    islight=isLight((127, 255, 212, 0.95)),
-                                    hidelogin=False),
-                slideshow=AutosaveJson(jsonpath="OwnSettings/slideshowsettings.json",
-                                       imgpath=MEDIA_ROOT + "\\SlideShow\\",
-                                       duration=10000,
-                                       maxheight=500,
-                                       breakpoint=1000),
-                footer=AutosaveJson(jsonpath="OwnSettings/footersettings.json",
-                                    title=u"Art \xa0\xa0Traditional",
-                                    titlefont="Alex Brush",
-                                    fontmultiplier=200,
-                                    fcolor=(255, 255, 255, 1),
-                                    bgcolor=(33, 37, 41, 1),
-                                    credits=f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate",
-                                    imgsource="/media/BannerR.png"),
-                card=AutosaveJson(jsonpath="OwnSettings/cardsettings.json",
-                                  color=(255, 255, 255, 0),
-                                  islight=isLight((255, 255, 255, 0)),
-                                  showtitle=True,
-                                  titlecolor=(0,0,0,1),
-                                  titlealign="center",
-                                  showprice=True,
-                                  finalpricecolor=(0,0,0,1),
-                                  reducerecolor=(255, 26, 26, 1),
-                                  initialpretcolor=(0,0,0,1),
-                                  showdescription=True,
-                                  showimage=True,
-                                  starscolor=(255, 255, 0, 1),
-                                  specificatii="marime gen rating"),
-                galerie=AutosaveJson(jsonpath="OwnSettings/galeriesettings.json",
-                                     pretmin=50,
-                                     pretmax=2000,
-                                     pas=50),
-             )
-        self.savetofile()
-
-    def context(self):
-        self.loadfromfile()
-        rez = {}
-        for key in self.keys():
-            if isinstance(self[key], dict):
-                name = str(self[key]["jsonpath"])
-                index = name.find("settings")
-                index2 = name[:index].rfind("/") + 1
-                name = name[index2:index]
-                for jkey in self[key]:
-                    rez[name+jkey] = self[key][jkey]
-
-                    # RULES
-
-                    if "color" in jkey:
-                        rez[name + jkey] = tuple(rez[name+jkey])
-            else: rez[key] = self[key]
-        return rez
-# endregion
-ownsettings = OwnSettings()
+def init_settings(save=False):
+    ownsettings = dict(jsonpath="OwnSettings/ownsettings.json",
+                       showprice=True,
+                       allowrating=False,
+                       title="Art Traditional",
+                       productimagepath="Products/",
+                       navbar=dict(jsonpath="OwnSettings/navbarsettings.json",
+                                   title=u"Ie \xa0Romanească",
+                                   titlefont="Alex Brush",
+                                   fontmultiplier=200,
+                                   titlecolor=(0, 0, 0, 1),
+                                   itemcolor=(77, 77, 77, 0.8),
+                                   itemhovercolor=(179, 179, 179, 0.9),
+                                   color=(127, 255, 212, 0.95),
+                                   islight=isLight((127, 255, 212, 0.95)),
+                                   hidelogin=False),
+                       slideshow=dict(jsonpath="OwnSettings/slideshowsettings.json",
+                                      imgpath=MEDIA_ROOT + "\\SlideShow\\",
+                                      duration=10000,
+                                      maxheight=500,
+                                      breakpoint=1000),
+                       footer=dict(jsonpath="OwnSettings/footersettings.json",
+                                   title=u"Art \xa0\xa0Traditional",
+                                   titlefont="Alex Brush",
+                                   fontmultiplier=200,
+                                   fcolor=(255, 255, 255, 1),
+                                   bgcolor=(33, 37, 41, 1),
+                                   credits=f"Drepturi de autor © {datetime.datetime.now().year}. Toate drepturile rezervate",
+                                   imgsource="/media/BannerR.png"),
+                       card=dict(jsonpath="OwnSettings/cardsettings.json",
+                                 color=(255, 255, 255, 0),
+                                 islight=isLight((255, 255, 255, 0)),
+                                 showtitle=True,
+                                 titlecolor=(0, 0, 0, 1),
+                                 titlealign="center",
+                                 showprice=True,
+                                 finalpricecolor=(0, 0, 0, 1),
+                                 reducerecolor=(255, 26, 26, 1),
+                                 initialpretcolor=(0, 0, 0, 1),
+                                 showdescription=True,
+                                 showimage=True,
+                                 starscolor=(255, 255, 0, 1),
+                                 specificatii="marime gen rating"),
+                       galerie=dict(jsonpath="OwnSettings/galeriesettings.json",
+                                    pretmin=50,
+                                    pretmax=2000,
+                                    pas=50),
+                       )

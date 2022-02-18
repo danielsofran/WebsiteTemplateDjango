@@ -35,11 +35,27 @@ def isfilterok(produs, filter, genuri, marimi) -> bool:
 
     return True
 
-def isLight(rgbColor=(0,128,255)):
-    r, g, b, a = rgbColor
+def isLight(rgbColor):
+    r = rgbColor[0]
+    g = rgbColor[1]
+    b = rgbColor[2]
+    a = rgbColor[3]
     hsp = math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b))
     if hsp>127.5 or a <= 0.3:
         return True
     return False
+
+def stringtocolor(string):
+    rez = []
+    for _ in string.split():
+        for token in _.split(","):
+            try:
+                val = float(token)
+                if val == int(val):
+                    val = int(val)
+                rez.append(val)
+            except: pass
+    return tuple(rez[:4])
+
 
 

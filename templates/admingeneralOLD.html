@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="m-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show mx-5 mb-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h1 class="mb-5 display-5 fw-normal"> Setări de administratrare a site-ului</h1>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>General</h4>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="ch1" {% if showprice %}checked{% endif %} name="showprice">
+          <label class="form-check-label" for="ch1"> Afiseaza pretul </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="ch2" {% if allowrating %}checked{% endif %} name="allowrating">
+          <label class="form-check-label" for="ch2"> Permite rating din partea utilizatorilor neautentificati </label>
+        </div>
+        <div class="mb-3 mt-2 d-flex flex-column flex-lg-row">
+          <label for="ch3" class="form-label text-nowrap">Titlu (numele paginii web, din bara de sus):</label>
+          <div class="ms-3 flex-fill"> <input type="text" class="form-control" id="ch3" value="{{ title }}" name="title" required></div>
+        </div>
+        <div class="mb-3 mt-2 d-flex flex-column flex-lg-row">
+          <label for="ch4" class="form-label text-nowrap">Folderul ce contine imaginile produselor:</label>
+          <div class="ms-3 flex-fill"> <input type="text" class="form-control" id="ch4" value="{{ productimagepath }}" name="productimagepath" required></div>
+        </div>
+        <h4>Bara de navigatie</h4>
+        <div class="mb-3 mt-2 d-flex flex-column flex-lg-row">
+          <label for="ch5" class="form-label text-nowrap">Titlu: </label>
+          <div class="ms-3 flex-fill"> <input type="text" class="form-control" id="ch5" value="{{ navbartitle }}" name="navbartitle" required></div>
+        </div>
+        <div class="mb-3 mt-2 d-flex flex-column flex-lg-row">
+          <label for="ch6" class="form-label text-nowrap">Font-ul titlului:</label>
+          <div class="ms-3 flex-fill"> <input type="text" class="form-control" id="ch6" value="{{ navbartitlefont }}" name="navbartitlefont" required></div>
+        </div>
+        <div class="mb-3 mt-2 d-flex flex-column flex-lg-row">
+          <label for="ch7" class="form-label text-nowrap">Multiplicator la font:</label>
+          <div class="ms-3 flex-fill"> <input type="text" class="form-control" id="ch7" value="{{ navbarfontmultiplier }}" name="navbarfontmultiplier" required></div>
+        </div>
+        <div class="d-flex flex-row justify-content-around m-1 mb-4 align-self-center">
+            <button type="button" class="btn btn-danger" onclick="window.location.href = '{% url 'reset' %}'"> Reseteaza la valorile intitiale</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href = '{% url 'admin' %}'"> Reseteaza valorile curente </button>
+            <button type="submit" class="btn btn-primary">Testeaza noile setari</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

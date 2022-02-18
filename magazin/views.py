@@ -7,19 +7,21 @@ from urllib.parse import urlencode
 
 from .models import Produs
 from WebsiteTemplate import settings
-from WebsiteTemplate.settings import ownsettings
 from .utils import isfilterok, getlength
+from loginapp.models import context, OwnSettings
 # Create your views here.
 
 def home(request):
-    path = ownsettings["slideshow"]["imgpath"]
-    files = os.listdir(path)
+    path = context(OwnSettings.objects.first())["slideshowimgpath"]
+    aditionalstr = ""
+    if path[0] != '/': aditionalstr = '\\'
+    files = os.listdir(settings.MEDIA_ROOT+aditionalstr+path.replace("/", "\\"))
     slideshowimages = [f'media/SlideShow/{imgname}' for imgname in files]
     return render(request, "home.html", {
         "firstimage": slideshowimages[0],
         "slideshowimages": slideshowimages[1:],
         "range": range(1, len(slideshowimages)),
-        **ownsettings.context(),
+        **context(OwnSettings.objects.first()),
     })
 
 def galerie(request):
@@ -65,11 +67,11 @@ def galerie(request):
         "prinstoc": sum(produs.stoc>0 for produs in _products),
         "marimi": marimi,
         "genuri": genuri,
-        "cardshowmarime": "marime" in ownsettings['card']['specificatii'],
-        "cardshowgen": "gen" in ownsettings['card']['specificatii'],
-        "cardshowrating": "rating" in ownsettings['card']['specificatii'],
+        "cardshowmarime": "marime" in context(OwnSettings.objects.first())['cardspecificatii'],
+        "cardshowgen": "gen" in context(OwnSettings.objects.first())['cardspecificatii'],
+        "cardshowrating": "rating" in context(OwnSettings.objects.first())['cardspecificatii'],
         **filtru,
-        **ownsettings.context(),
+        **context(OwnSettings.objects.first()),
     })
 
 def produs(request, id):
@@ -86,7 +88,7 @@ def produs(request, id):
         "allimages": images,
         "allimagesindexes": zip(images[1:], range(2, len(images)+1)),
         "range5": range(5),
-        **ownsettings.context(),
+        **context(OwnSettings.objects.first()),
     })
 
 def rateprodus(request, id):
@@ -116,7 +118,7 @@ def search(request):
             for marime in numemarimi:
                 if marime == token:
                     filter["marime"+marime.upper()] = "on"
-            if ownsettings['showprice']:
+            if context(OwnSettings.objects.first())['showprice']:
                 if "redus" in token or "reducere" in token:
                     filter["stoc"] = "redus"
                 try: token=int(token)

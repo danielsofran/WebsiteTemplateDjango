@@ -17,4 +17,3 @@ function checkinput(elem, value)
             elem.setAttribute("checked", "")
     }
 }
-

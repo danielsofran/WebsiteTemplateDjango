@@ -13,9 +13,14 @@ function fillStars(index){
       }
   }
 }
-
+function serialize(obj) {
+  var str = [];
+  for(var p in obj)
+     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+  return str.join("&");
+}
 function activateAlert(text, state="success"){
-    let alerttag = document.getElementById("alerteval")
+    alerttag = document.getElementById("alerteval")
     for(let i=0;i<alerttag.classList.length;++i)
     {
         let cls = alerttag.classList[i]
@@ -27,21 +32,12 @@ function activateAlert(text, state="success"){
     document.getElementById("alerttext").innerHTML = text
     setTimeout(function () {document.getElementById("alerteval").classList.add("d-none")}, 5000 )
 }
-
-function serialize(obj) {
-  let str = [];
-  for(let p in obj)
-     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-  return str.join("&");
-}
-
 var rated = false
-
 function rateproduct(i) {
   if(!rated)
   {
-    let httpRequest = new XMLHttpRequest()
-    httpRequest.open('GET', window.location.href+"-----/rate/?"+serialize({stars: i+1}))
+    httpRequest = new XMLHttpRequest()
+    httpRequest.open('GET', window.location.href+"/rate/?"+serialize({stars: i+1}))
     httpRequest.send()
     httpRequest.onreadystatechange = function(){
     // Process the server response here.

@@ -1,4 +1,3 @@
-// for slideshow breakpoint
 function getsize() {
     var win = window,
         doc = document,
@@ -9,8 +8,9 @@ function getsize() {
     return {width:x, height:y};
 }
 
-function istall()
-{
+function istall() {
     let size = getsize()
-    return size.height / size.width > 1.5;
+    if(size.height/size.width > 1.4)
+        return true
+    return false
 }

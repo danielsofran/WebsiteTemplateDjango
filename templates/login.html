@@ -10,16 +10,16 @@
             </div>
         {% endfor %}
     {% endif %}
-    <form class="m-5 me-auto " style=" max-inline-size: 80%;max-width: 500px;" method="POST">
+    <form class="m-5 me-auto " style="max-inline-size: 80%;max-width: 500px;" method="POST">
         {% csrf_token %}
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Nume de utilizator/Email</label>
-        <input type="text" class="form-control me-5" id="exampleInputEmail1" aria-describedby="userHelp" name="username">
+        <input type="text" class="form-control me-5" id="exampleInputEmail1" aria-describedby="userHelp" name="username" required>
         <div id="userHelp" class="form-text"> Introduceti numele de utilizator sau email ul</div>
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Parola</label>
-        <input type="password" class="form-control me-5" id="exampleInputPassword1" name="password">
+        <input type="password" class="form-control me-5" id="exampleInputPassword1" name="password" required>
       </div>
       <button type="submit" class="btn btn-primary">Log in</button>
     </form>

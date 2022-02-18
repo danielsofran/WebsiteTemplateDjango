@@ -7,10 +7,9 @@
 
 {% block content %}
 
-<h1 class="mt-5 ms-5 mb-2 text-{{ cardtitlealign }}" style="color: rgba{{ cardtitlecolor }}"> {{ produs.nume }}</h1>
-
 <div class="d-flex my-5 my-xl-0 flex-column flex-xl-row">
     <div class="mx-5 my-2 my-xl-5 flex-fill">
+    <h1 class="mt-0 ms-5 mb-5 text-{{ cardtitlealign }}" style="color: rgba{{ cardtitlecolor }}"> {{ produs.nume }}</h1>
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active">
@@ -67,9 +66,9 @@
             <ul class="list-inline fs-3">  {# list of stars #}
                 {% for i in range5 %}
                     {% if produs.rating.value >= i %}
-                    <li class="list-inline-item m-0"><i class="fa fa-star" style="color: rgba{{ cardstarscolor }}"></i></li>
+                    <li class="list-inline-item m-0"><i class="fa fa-star" style="color: rgba{{ cardstarcolor }}"></i></li>
                     {% else %}
-                    <li class="list-inline-item m-0"><i class="fa fa-star-o" style="color: rgba{{ cardstarscolor }}"></i></li>
+                    <li class="list-inline-item m-0"><i class="fa fa-star-o" style="color: rgba{{ cardstarcolor }}"></i></li>
                     {% endif %}
                 {% endfor %}
              </ul>
@@ -122,7 +121,7 @@
     <ul class="list-inline fs-4 me-5" onmouseleave="fillStars(-1)">  {# list of stars #}
         {% for i in range5 %}
             <li class="list-inline-item m-0" onmouseenter="fillStars({{ i }})" onclick="{% if allowrating %}rateproduct({{ i }}){% else %}activateAlert('<strong>Important!</strong> Nu puteti evalua acest produs deoarece nu sunteti logat.', 'danger') {% endif %}">
-                <i id="star-{{ i }}" class="fa fa-star-o" style="color: rgba{{ cardstarscolor }}"></i>
+                <i id="star-{{ i }}" class="fa fa-star-o" style="color: rgba{{ cardstarcolor }}"></i>
             </li>
         {% endfor %}
      </ul>

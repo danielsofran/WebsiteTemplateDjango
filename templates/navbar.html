@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top fs-2"
      style="background: rgba{{ navbarcolor }}; ">
-  <h1 class="navbar-brand my-auto px-1 ms-1 me-0" style="font-family: {{ navbartitlefont }}; color: rgba{{ navbartitlecolor }}; display: block; font-size: 200%" onmousedown='return false;'>{{ navbartitle }}</h1>
+  <h1 class="navbar-brand my-auto px-1 ms-1 me-0" style="font-family: {{ navbartitlefont }}; color: rgba{{ navbartitlecolor }}; display: block; font-size: {{ navbarfontmultiplier }}%" onmousedown='return false;'>{{ navbartitle }}</h1>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -29,15 +29,27 @@
             onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
             onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"><i class="fa fa-fw fa-envelope"></i>  Contact</a>
         </li>
-        <li class="nav-item {% if not user.is_superuser %}d-none{% endif %}">
-          <a class="nav-link" style="color: rgba{{ navbaritemcolor }}" href="#"
+{#        <li class="nav-item {% if not user.is_superuser %}d-none{% else %} d-flex {% endif %} align-items-center">#}
+{#          <a class="nav-link " style="color: rgba{{ navbaritemcolor }}" href="{% if user.is_superuser %}{% url 'admin' %}{% endif %}"#}
+{#          onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"#}
+{#          onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">Admin</a>#}
+{#        </li>#}
+        {% if user.is_superuser %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
           onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
           onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';">Admin</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Gestioneaza produse</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'admin' %}">Setari generale</a></li>
+          </ul>
         </li>
+        {% endif %}
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-1 fs-3 text-center">
         <li class="nav-item d-block {% if navbarhidelogin %}fs-5{% endif %}">
-            <a class="nav-link" aria-current="page" href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}"  {% if navbarhidelogin %}style="color: rgba(0,0,0,1)"{% endif %}
+            <a class="nav-link" aria-current="page" href="{% if not user.is_authenticated %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}"  {% if navbarhidelogin %}style="color: transparent"{% endif %}
             {% if not navbarhidelogin %}
             onmouseleave="this.style.color='rgba{{ navbaritemcolor }}';"
             onmouseenter="this.style.color='rgba{{ navbaritemhovercolor }}';"

@@ -1,4 +1,3 @@
-/* footer button */
 @keyframes greyscale-fade-in {
     0%   { -webkit-filter: grayscale(100%); }
     100% { -webkit-filter: grayscale(0%); }

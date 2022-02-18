@@ -16,7 +16,7 @@
         {% for imgpath in slideshowimages %}
             <div class="carousel-item">
             {% with imgpath as image_static %}
-            <img src="{{ imgpath }}" class="d-block w-100 slideshowimage" data-bs-interval="{{ slideshowduration }}" >
+            <img src="{{ imgpath }}" class="d-block w-100 slideshowimage" data-bs-interval="{{ slideshowduration }}" alt="">
             {% endwith %}
 {#            <div class="carousel-caption d-none d-md-block mb-1">#}
 {#                <h5>First slide label</h5>#}
@@ -26,7 +26,6 @@
       {% endfor %}
     </div>
 
-  </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouseldiv" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Înapoi</span>

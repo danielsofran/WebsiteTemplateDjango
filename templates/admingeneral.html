@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="m-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show mx-5 mb-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h1 class="mb-5 display-5 fw-normal"> Setări de administratrare a site-ului</h1>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>General</h4>
+        {{ formgeneral.as_p }}
+        <button type="submit" class="btn btn-primary ms-5" name="general">Salveaza</button>
+    </form>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>Navbar</h4>
+        {{ formnavbar.as_p }}
+        <button type="submit" class="btn btn-primary ms-5" name="navbar">Salveaza</button>
+    </form>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>SlideShow</h4>
+        {{ formslideshow.as_p }}
+        <button type="submit" class="btn btn-primary ms-5" name="slideshow">Salveaza</button>
+    </form>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>Galerie</h4>
+        {{ formgalerie.as_p }}
+        <button type="submit" class="btn btn-primary ms-5" name="galerie">Salveaza</button>
+    </form>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>Footer</h4>
+        {{ formfooter.as_p }}
+        <button type="submit" class="btn btn-primary ms-5" name="footer">Salveaza</button>
+    </form>
+    <form class="fs-5 mb-5" method="POST">
+        {% csrf_token %}
+        <h4>Card</h4>
+        {{ formcard.as_p }}
+        <button type="submit" class="btn btn-primary ms-5" name="card">Salveaza</button>
+    </form>
+</div>
+{% endblock %}
+
