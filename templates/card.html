@@ -35,5 +35,8 @@
               </ul>
              </div>
             {% endif %}
+        {% if user.is_superuser %}
+            <button type="button" class="btn btn-outline-dark mt-2 mx-auto" onclick="window.location.href='/login/admin/modify?produs={{ produs.id }}'"> Editeaza</button>
+        {% endif %}
     </div>
 </div>

@@ -17,12 +17,6 @@
 {% endif %}
 <form class="fs-5 mb-5" method="POST">
     {% csrf_token %}
-    <h4>General</h4>
-    {{ formgeneral.as_p }}
-    <button type="submit" class="btn btn-primary ms-5" name='general'>Salveaza</button>
-</form>
-<form class="fs-5 mb-5" method="POST">
-    {% csrf_token %}
     <h4>Rating</h4>
     {{ formrating.as_p }}
     <button type="submit" class="btn btn-primary ms-5" name='rating'>Salveaza</button>
@@ -59,7 +53,16 @@
     {{ formspecificatii.as_p }}
     <button type="submit" class="btn btn-primary ms-5" name='specificatii'>Salveaza</button>
 </form>
-    <button type="button" class="btn btn-danger" onclick="window.location.href = '{% url 'admin' %}'"> Reseteaza </button>
+<form class="fs-5 mb-5" method="POST">
+    {% csrf_token %}
+    <h4>General</h4>
+    {{ formgeneral.as_p }}
+    <div class="d-flex flex-row justify-content-left m-1 mb-4 align-self-center">
+        <button type="button" class="btn btn-danger ms-5" onclick="location.reload()"> Reseteaza </button>
+        <button type="submit" class="btn btn-success ms-5" name='general'>Salveaza</button>
+    </div>
+</form>
+
 </div>
 {% endblock %}
 

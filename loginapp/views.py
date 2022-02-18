@@ -148,8 +148,10 @@ def modify(request):
     else:
         if "general" in request.POST:
             produs = None
+            qs = None
             if "produs" in request.GET:
                 produs = Produs.objects.get(id=int(request.GET['produs']))
+                qs = Produs.objects.filter(id=int(request.GET['produs']))
             if produs is None: # INSERT
                 for key in ["rating", "pret", "card", "imgs", "specificatii"]:
                     if not key in saved:
@@ -175,38 +177,81 @@ def modify(request):
                     print(e)
                     return redirect('modify')
             else:
-                print("UPDATE")
+                try:
+                    createdict = {
+                        "nume": request.POST['nume'],
+                        "descriere": request.POST['descriere'],
+                        "stoc": int(request.POST['stoc']),
+                        "sters": "sters" in request.POST,
+                    }
+                    # createdict.update({
+                    #     k: saved[k] for k in ["rating", "pret", "specificatii"]
+                    # })
+                    # createdict["imagini"] = produs.imagini
+                    qs.all().update(**createdict)
+                    messages.success(request, "Produsul a fost actualizat!")
+                    saved.clear()  # daca nu au fost erori, operatia s-a efectuat cu success
+                    return redirect('modify')
+                except Exception as e:
+                    messages.success(request, "Operatie nereusita!")
+                    saved.clear()
+                    print(e)
+                    return redirect('modify')
         elif "rating" in request.POST:
             form = RatingForm(request.POST)
             if form.is_valid():
-                saved["rating"] = form.save()
+                if "produs" in request.GET:
+                    qs = Produs.objects.filter(id=int(request.GET['produs']))
+                    qs.all().update(rating=form.save())
+                else: saved["rating"] = form.save()
             else:
                 messages.success(request, "Rating invalid!")
                 return redirect('modify')
         elif "pret" in request.POST:
             form = PretForm(request.POST)
             if form.is_valid():
-                saved["pret"] = form.save()
+                if "produs" in request.GET:
+                    qs = Produs.objects.filter(id=int(request.GET['produs']))
+                    qs.all().update(pret=form.save())
+                else:
+                    saved["pret"] = form.save()
             else:
                 messages.success(request, "Pret invalid!")
-                assert False
                 return redirect('modify')
         elif "imagini" in request.POST:
             iscard = False
+            card = Produs.objects.get(id=int(request.GET['produs'])).imagini
             if "card" in request.FILES:
-                saved["card"] = Imagini.objects.create(card=request.FILES['card'])
-                iscard = True
-            if iscard:
+                if "produs" in request.GET:
+                    qs = Produs.objects.filter(id=int(request.GET['produs']))
+                    qs.all().update(imagini=Imagini.objects.create(card=request.FILES['card']))
+                    card = qs.first().imagini
+                    iscard = True
+                else:
+                    saved["card"] = Imagini.objects.create(card=request.FILES['card'])
+                    iscard = True
+            if iscard or "produs" in request.GET:
                 for i in range(1, 21):
                     if f"img{i}" in request.FILES:
-                        saved["imgs"] = Imagine.objects.create(img=request.FILES[f'img{i}'], colectie=saved['card'])
+                        if "produs" in request.GET:
+                            produs = Produs.objects.get(id=int(request.GET['produs']))
+                            qs = Imagine.objects.filter(img=request.FILES[f"img{i}"])
+                            image = Imagine.objects.create(img=request.FILES[f'img{i}'], colectie=card)
+                            assert isinstance(card, Imagini)
+                            ud = qs.all().update(img=image.img)
+                        else:
+                            saved["imgs"] = Imagine.objects.create(img=request.FILES[f'img{i}'], colectie=saved['card'])
             else:
                 messages.success(request, "Nu aveti o imagine Card selectata!")
                 return redirect('modify')
         elif "specificatii" in request.POST:
             form = SpecificatiiForm(request.POST)
             if form.is_valid():
-                saved["specificatii"] = form.save()
+                if "produs" in request.GET:
+                    qs = Produs.objects.filter(id=int(request.GET['produs']))
+                    qs.all().update(specificatii=form.save())
+                else:
+                    saved["specificatii"] = form.save()
             else:
                 messages.success(request, "Specificatii invalide!")
                 return redirect('modify')
