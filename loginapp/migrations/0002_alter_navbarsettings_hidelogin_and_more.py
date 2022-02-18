@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='ownsettings',
             name='showprice',
-            field=models.BooleanField(default=True, verbose_name='Arata pretul'),
+            field=models.BooleanField(default=True, verbose_name='Arata pret'),
         ),
         migrations.AlterField(
             model_name='slideshowsettings',

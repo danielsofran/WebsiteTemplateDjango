@@ -42,7 +42,7 @@ class CardSettings(models.Model):
     starcolor=models.CharField("Culoare stele rating", default="255, 255, 0, 1", max_length=20)
     showtitle=models.BooleanField("Afiseaza numele", default=True)
     titlealign=models.CharField("Alinierea titlului", choices=[("center", "Centru"), ("end", "Dreapta"), ("start", "Stanga")], default="center", max_length=10)
-    showprice=models.BooleanField("Afiseaza pretul", default=True)
+    showprice=models.BooleanField("Afiseaza pret", default=True)
     showdescription=models.BooleanField("Afiseaza descrierea", default=True)
     showimage=models.BooleanField("Afiseaza imaginea produsului", default=True)
     specificatii=models.CharField("Specificatiile afisate", default="marime rating", max_length=30)
@@ -53,7 +53,7 @@ class GalerieSettings(models.Model):
     pas=models.IntegerField("Pas", default=50)
 
 class OwnSettings(models.Model):
-    showprice=models.BooleanField("Arata pretul", default=True)
+    showprice=models.BooleanField("Arata pret", default=True)
     allowrating=models.BooleanField("Permite rating", default=True)
     title=models.CharField("Titlul paginii", default="Art Traditional", max_length=20)
     productimagepath=models.CharField("Folderul unde se incarca imaginile produselor", default="Products/", max_length=20)

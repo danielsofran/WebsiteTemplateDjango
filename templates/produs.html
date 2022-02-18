@@ -55,7 +55,7 @@
             <h1 class="display-5 fw-normal mb-4 me-5"> Pret</h1>
             <h1 class="display-5 fw-bold"> {{ produs.pret.pret_final }} RON</h1>
             {% if produs.pret.reducere != 0 %}
-            <h2 class="text-decoration-line-through text-danger"> {{ produs.pret.pret }} RON</h2>
+            <h2 class="text-decoration-line-through text-danger"> {{ produs.pret.pretul }} RON</h2>
             <h1 class="text-success">Reducere -{{ produs.pret.reducere }}%</h1>
             {% endif %}
         </div>

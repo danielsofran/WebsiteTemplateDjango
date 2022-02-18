@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('starcolor', models.CharField(default='255, 255, 0, 1', max_length=20, verbose_name='Culoare stele rating')),
                 ('showtitle', models.BooleanField(default=True, verbose_name='Afiseaza numele')),
                 ('titlealign', models.CharField(choices=[('center', 'Centru'), ('end', 'Dreapta'), ('start', 'Stanga')], default='center', max_length=10, verbose_name='Alinierea titlului')),
-                ('showprice', models.BooleanField(default=True, verbose_name='Afiseaza pretul')),
+                ('showprice', models.BooleanField(default=True, verbose_name='Afiseaza pret')),
                 ('showdescription', models.BooleanField(default=True, verbose_name='Afiseaza descrierea')),
                 ('showimage', models.BooleanField(default=True, verbose_name='Afiseaza imaginea produsului')),
                 ('specificatii', models.CharField(default='marime gen', max_length=30, verbose_name='Specificatiile afisate')),

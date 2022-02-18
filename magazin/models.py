@@ -16,12 +16,12 @@ class Rating(models.Model):
         return str(self.value)
 
 class Pret(models.Model):
-    pret = models.FloatField("Pret", default=0)
+    pretul = models.FloatField("Pret", default=0)
     reducere = models.FloatField("Reducere", default=0)
 
     @property
     def pret_final(self):
-        return float("{:.2f}".format(self.pret - self.pret * (self.reducere/100)))
+        return float("{:.2f}".format(self.pretul - self.pretul * (self.reducere / 100)))
 
     def __str__(self):
         return str(self.pret_final)
@@ -30,7 +30,7 @@ class Pret(models.Model):
 class Imagini(models.Model):
     card = models.FileField("Card Image", upload_to='Products/', blank=False, null=True)
     def __str__(self):
-        return self.card.path
+        return self.card.name
 
 
 class Imagine(models.Model):

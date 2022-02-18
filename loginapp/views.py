@@ -163,14 +163,16 @@ def modify(request):
                         "sters": "sters" in request.POST,
                     }
                     createdict.update({
-                        k: saved[k] for k in ["rating", "pret", "card", "specificatii"]
+                        k: saved[k] for k in ["rating", "pret", "specificatii"]
                     })
+                    createdict["imagini"] = saved["card"]
                     produs = Produs.objects.create(**createdict)
                     messages.success(request, "Produsul a fost adaugat!")
                     saved.clear()  # daca nu au fost erori, operatia s-a efectuat cu success
                     return redirect('modify')
-                except:
+                except Exception as e:
                     messages.success(request, "NU toate campurile au fost completate!")
+                    print(e)
                     return redirect('modify')
             else:
                 print("UPDATE")

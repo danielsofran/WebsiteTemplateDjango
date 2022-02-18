@@ -63,7 +63,7 @@ def galerie(request):
         "noresult": len(products) == 0,
         'nrproduse': nrprod,
         "range5": range(1, 6),
-        "reduse": sum(produs.pret.reducere>0 for produs in _products),
+        "reduse": sum(produs.pret.reducere > 0 for produs in _products),
         "prinstoc": sum(produs.stoc>0 for produs in _products),
         "marimi": marimi,
         "genuri": genuri,
@@ -95,7 +95,7 @@ def rateprodus(request, id):
     produs = Produs.objects.get(id=id)
     produs.rating.count += 1
     produs.rating.stars += int(request.GET['stars'])
-    produs.rating.save()
+    produs.rating.save(force_update=True)
     return HttpResponseRedirect(f'/galerie/{id}')
 
 def search(request):
